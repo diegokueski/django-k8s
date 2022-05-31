@@ -11,6 +11,12 @@ python3 manage.py migrate
 pip freeze > requirements.txt
 python manage.py createsuperuser (admin/admin)
 
+## Connect to Postgres BD
+export POSTGRES_USER=postgres
+export POSTGRES_PASSWORD=XvxtXjM7GN
+export HOST=127.0.0.1
+export POSTGRES_PORT=5432
+
 ## Docker
 
 +Crear imagen
@@ -30,6 +36,7 @@ docker login
 docker logout
 
 +Push a docker hub 
+docker build -t soydiegomen/django_hello_app:v2  .
 docker push soydiegomen/django_hello_app:latest
 
 ## Kubernetes
@@ -50,14 +57,21 @@ kubectl describe secret  my-release-postgresql
 export POSTGRES_PASSWORD=43qzNLy1f0
 
 +Hacer el tunnel para conectarme a la BD
-kubectl port-forward --namespace default svc/my-release-postgresql 5432:5432 &
+kubectl port-forward --namespace django-app svc/postgres-service-postgresql 5432:5432 &
     PGPASSWORD="$POSTGRES_PASSWORD" psql --host 127.0.0.1 -U postgres -d postgres -p 5432
 -----
 +Conectarme a la BD utilizando un conteiner con un cliente de postgresql
 kubectl get all -o wide  
-kubectl run postgres-postgresql-client --rm --tty -i --restart='Never' --namespace default --image docker.io/bitnami/postgresql:11.9.0-debian-10-r48 --env="PGPASSWORD=$POSTGRES_PASSWORD" --command -- psql --host my-release-postgresql -U postgres -d postgres -p 5432
+kubectl run postgres-postgresql-client --rm --tty -i --restart='Never' --namespace django-app --image docker.io/bitnami/postgresql:11.9.0-debian-10-r48 --env="PGPASSWORD=$POSTGRES_PASSWORD" --command -- psql --host postgres-service-postgresql -U postgres -d postgres -p 5432
 +Hacer un query
 SELECT * FROM phonebook ORDER BY lastname;
+
+## Secrets to base64
+echo -n "postgres" | base64
+echo -n "XvxtXjM7GN" | base64
+
++ Create BD secrets in cluster
+kubectl apply -f k8s/postgres/secrets.yml
 
 +Referencias: 
 https://itnext.io/basic-postgres-database-in-kubernetes-23c7834d91ef
