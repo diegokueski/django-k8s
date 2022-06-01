@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: django-app
-        image: soydiegomen/django_hello_app:v2
+        image: soydiegomen/django_hello_app:v3
         ports:
         - containerPort: 8000
         env:
@@ -32,4 +32,4 @@ spec:
                 key: password
 
           - name: POSTGRES_HOST
-            value: postgres-service
+            value: postgres-service-postgresql

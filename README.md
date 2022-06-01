@@ -14,7 +14,7 @@ python manage.py createsuperuser (admin/admin)
 ## Connect to Postgres BD
 export POSTGRES_USER=postgres
 export POSTGRES_PASSWORD=XvxtXjM7GN
-export HOST=127.0.0.1
+export POSTGRES_HOST=127.0.0.1
 export POSTGRES_PORT=5432
 
 ## Docker
@@ -24,6 +24,8 @@ docker build -t django_hello_app:latest  .
 
 +Ejecutar el contenedor
 docker run -p 8000:8000 django_hello_app:latest
++Para que se pueda conectar a un postgres local, se necesita exponer el puerto del postgres
+docker run -p 8000:8000 -e POSTGRES_HOST=127.0.0.1 -e POSTGRES_PORT=5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=XvxtXjM7GN --entrypoint /bin/bash -it soydiegomen/django_hello_app:v2
 
 +Crear tag
 docker image tag django_hello_app:latest soydiegomen/django_hello_app:latest
