@@ -69,6 +69,7 @@ kubectl port-forward service/django-app  8080:8080 -n django-app
 http://localhost:8080/
 
 ## Install Postgresql
++ Reference:  https://github.com/bitnami/charts/tree/master/bitnami/postgresql   
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install my-release bitnami/postgresql
 
@@ -91,6 +92,8 @@ echo -n "XvxtXjM7GN" | base64
 ### Create BD secrets in cluster
 kubectl apply -f k8s/postgres/secrets.yml
 
+## Delete postgres service (Helm Chart)
+helm delete postgres-service -n django-app
 ---
 
 ## Referencias: 

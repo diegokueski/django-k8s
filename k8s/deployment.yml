@@ -15,9 +15,28 @@ spec:
     spec:
       containers:
       - name: django-app
-        image: soydiegomen/django_hello_app:v3
+        image: soydiegomen/django_hello_app:v3.1
         ports:
         - containerPort: 8000
+        startupProbe:
+          httpGet:
+            path: /health/
+            port: 8000
+          failureThreshold: 12
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health/
+            port: 8000
+          failureThreshold: 2
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health/
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 30
         env:
           - name: POSTGRES_USER
             valueFrom:
