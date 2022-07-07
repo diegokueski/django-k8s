@@ -22,7 +22,7 @@ pip freeze > requirements.txt
 
 ## Connect to Postgres BD
 export POSTGRES_USER=postgres  
-export POSTGRES_PASSWORD=XvxtXjM7GN  
+export POSTGRES_PASSWORD=l2wLCwcw0q  
 export POSTGRES_HOST=127.0.0.1  
 export POSTGRES_PORT=5432  
 
@@ -71,15 +71,14 @@ http://localhost:8080/
 ## Install Postgresql
 + Reference:  https://github.com/bitnami/charts/tree/master/bitnami/postgresql   
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm install my-release bitnami/postgresql
+helm install django-app bitnami/postgresql -n django-app
 
 ### Get postgresql pass
 kubectl describe secret  my-release-postgresql
 export POSTGRES_PASSWORD=43qzNLy1f0
 
 ## Setup tunnel to connect to postgres
-kubectl port-forward --namespace django-app svc/postgres-service-postgresql 5432:5432 &
-    PGPASSWORD="$POSTGRES_PASSWORD" psql --host 127.0.0.1 -U postgres -d postgres -p 5432
+kubectl port-forward --namespace django-app svc/django-app-postgresql 5432:5432
 
 ## Test postgres connection
 kubectl get all -o wide  
@@ -87,7 +86,7 @@ kubectl run postgres-postgresql-client --rm --tty -i --restart='Never' --namespa
 
 ### Secrets to base64
 echo -n "postgres" | base64
-echo -n "XvxtXjM7GN" | base64
+echo -n $POSTGRES_PASSWORD | base64
 
 ### Create BD secrets in cluster
 kubectl apply -f k8s/postgres/secrets.yml
