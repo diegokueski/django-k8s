@@ -102,3 +102,13 @@ https://bitnami.com/stack/postgresql/helm
 ## Create tunnel to test de django app
 kubectl port-forward service/django-app  8080:8080 -n django-app
 http://localhost:8080/
+
+## Deploy using kustomization
+kubectl apply -k ./.k8s/overlays/local
+
+---
+
+### Test local postgres
+```
+kubectl run postgres-postgresql-client --rm --tty -i --restart='Never' --namespace django-app --image bitnami/postgresql --env="PGPASSWORD=$PGPASSWORD" --command -- psql --host django-app-postgresql -U postgres -d postgres -p 5432
+```

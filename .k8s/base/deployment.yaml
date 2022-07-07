@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: django-app
-  namespace: django-app
 spec:
   selector:
     matchLabels:
