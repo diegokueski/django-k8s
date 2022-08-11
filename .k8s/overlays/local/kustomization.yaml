@@ -6,3 +6,7 @@ commonLabels:
   app: django-app
 bases:
   - ../../base
+images:
+  - name: soydiegomen/django_hello_app
+    newName: soydiegomen/django_hello_app
+    newTag: v1.0.2

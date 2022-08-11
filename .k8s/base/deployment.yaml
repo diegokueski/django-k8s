@@ -14,22 +14,22 @@ spec:
     spec:
       containers:
       - name: django-app
-        image: soydiegomen/django_hello_app:v3.1
+        image: soydiegomen/django_hello_app
         ports:
         - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /health/
+            port: 8000
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 30
         # startupProbe:
         #   httpGet:
         #     path: /health/
         #     port: 8000
         #   failureThreshold: 12
         #   periodSeconds: 10
-        # livenessProbe:
-        #   httpGet:
-        #     path: /health/
-        #     port: 8000
-        #   failureThreshold: 2
-        #   initialDelaySeconds: 60
-        #   periodSeconds: 30
         # readinessProbe:
         #   httpGet:
         #     path: /health/
